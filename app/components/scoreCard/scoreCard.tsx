@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import styles from './scoreCard.module.css';
 
 interface ScoreCardProps {
@@ -39,4 +39,4 @@ const ScoreCard: React.FC<ScoreCardProps> = ({ title, score, maxScore, comment }
   );
 };
 
-export default ScoreCard;
+export default memo(ScoreCard);

@@ -8,7 +8,6 @@
   border-radius: 9999px;
   background-color: #e0e7ff; /* indigo-100 */
   margin-bottom: 1rem;
-  position: relative;
 }
 
 .totalScoreContainer{
@@ -110,5 +109,6 @@
 
 .noResultIcon {
   margin-bottom: 8px;
+  color: rgb(209 213 219);
 }
 

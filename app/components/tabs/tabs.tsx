@@ -1,4 +1,5 @@
 'use client';
+import { memo } from 'react';
 import styles from './tabs.module.css';
 import { useAudio } from '@/app/context/AudioContext';
 
@@ -11,7 +12,7 @@ interface TabsProps {
   tabs: Tab[];
 }
 
-export default function Tabs({ tabs }: TabsProps) {
+const Tabs = function({ tabs }: TabsProps) {
   const {activeTab , setActiveTab} = useAudio();
 
   return (
@@ -28,3 +29,5 @@ export default function Tabs({ tabs }: TabsProps) {
     </div>
   );
 }
+
+export default memo(Tabs);

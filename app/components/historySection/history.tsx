@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styles from './history.module.css';
 import { useAudio } from '@/app/context/AudioContext';
 
@@ -51,4 +51,4 @@ const HistorySection: React.FC = () => {
   );
 };
 
-export default HistorySection;
+export default memo(HistorySection);

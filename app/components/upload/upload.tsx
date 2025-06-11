@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, ChangeEvent, DragEvent } from 'react';
+import React, { useState, useRef, ChangeEvent, DragEvent, memo } from 'react';
 import styles from './upload.module.css';
 import { useAudio } from '@/app/context/AudioContext';
 
@@ -119,4 +119,4 @@ const UploadSection: React.FC = () => {
   );
 };
 
-export default UploadSection;
+export default memo(UploadSection);
