@@ -189,6 +189,7 @@ export async function POST(request: Request) {
         console.log("[Next.js API] Analysis complete. Sending structured feedback.");
         return NextResponse.json(parsedAnalysis, { status: 200 }); // Return the parsed JSON directly
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error("[Next.js API] Error during Gemini API calls:", error);
         // Provide more detailed error response for debugging
