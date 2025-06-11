@@ -19,10 +19,10 @@ An intelligent audio scoring tool that analyzes uploaded audio files (e.g., cust
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/audio-scoring-system.git](https://github.com/rahulchav/audio_ai_feedback.git
+git clone https://github.com/rahulchav/audio_ai_feedback.git
 
 # 2. Navigate to the project
-cd audio-scoring-system
+cd audio_ai_feedback
 
 # 3. Install dependencies
 npm install
