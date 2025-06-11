@@ -7,8 +7,8 @@ export default function LayoutWrapper() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1>Audio Scoring System</h1>
-        <p>Upload your audio file for instant feedback and scoring</p>
+        <h1>AI Audio Scoring System</h1>
+        <p>Upload your audio file for instant AI feedback and scoring</p>
       </header>
       <div className={styles.mainCard}>
           <AudioProvider>

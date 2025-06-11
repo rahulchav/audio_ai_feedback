@@ -4,12 +4,21 @@ import React, { useState, useRef, ChangeEvent, DragEvent, memo } from 'react';
 import styles from './upload.module.css';
 import { useAudio } from '@/app/context/AudioContext';
 
+/**
+ * UploadSection Component
+ * Handles file upload functionality with drag-and-drop and click-to-upload options
+ */
 const UploadSection: React.FC = () => {
+  // State management
   const [isDragActive, setIsDragActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { audioURL, selectedFile , setAudioURL, setSelectedFile, setResult } = useAudio();
+  const { audioURL, selectedFile, setAudioURL, setSelectedFile, setResult } = useAudio();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  /**
+   * Validates and processes the uploaded audio file
+   * @param file - The file to be processed
+   */
   const handleFile = (file: File) => {
     if (!file.type.startsWith('audio/')) {
       alert('Please select a valid audio file');
@@ -20,6 +29,7 @@ const UploadSection: React.FC = () => {
     setAudioURL(URL.createObjectURL(file));
   };
 
+  // Drag and drop event handlers
   const onDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragActive(false);
@@ -45,44 +55,50 @@ const UploadSection: React.FC = () => {
     }
   };
 
+  /**
+   * Processes the uploaded audio file and sends it to the server for analysis
+   */
   const handelFileProcess = async () => {
-
-  if (!selectedFile) {
-    console.warn('No file selected for processing.');
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append('audio_file', selectedFile);
-  setIsLoading(true);
-  try {
-    const response = await fetch('/api/analyze-call', {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (!response.ok) {
-      throw new Error('File analysis failed');
+    if (!selectedFile) {
+      console.warn('No file selected for processing.');
+      return;
     }
 
-    const result = await response.json();
+    const formData = new FormData();
+    formData.append('audio_file', selectedFile);
+    setIsLoading(true);
 
-    setResult(result);
-  } catch (err) {
-    console.error('Error during file processing:', err);
-  } finally { 
-    setIsLoading(false);
-  }
-};
+    try {
+      const response = await fetch('/api/analyze-call', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('File analysis failed');
+      }
+
+      const result = await response.json();
+      setResult(result);
+    } catch (err) {
+      console.error('Error during file processing:', err);
+    } finally { 
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className={styles.containerdropzone}>
+      {/* Drag and drop zone */}
       <div
         className={`${styles.dropzone} ${isDragActive ? styles.active : ''}`}
         onClick={() => fileInputRef.current?.click()}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
+        role="button"
+        tabIndex={0}
+        aria-label="Drop zone for audio files"
       >
         <svg className={styles.icon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -93,14 +109,17 @@ const UploadSection: React.FC = () => {
         <p className={styles.subtext}>Supported formats: MP3, WAV</p>
       </div>
 
+      {/* Hidden file input */}
       <input
         type="file"
         accept="audio/*"
         ref={fileInputRef}
         className={styles.fileInput}
         onChange={onFileChange}
+        aria-label="File input"
       />
 
+      {/* File preview and processing section */}
       {selectedFile && audioURL && (
         <div className={styles.container}>
           <h3 className={styles.heading}>Preview</h3>
@@ -108,7 +127,11 @@ const UploadSection: React.FC = () => {
             <audio className={styles.audioPlayer} controls src={audioURL} />
             <p className={styles.fileName}>Selected file: {selectedFile?.name}</p>
             <div className={styles.buttonWrapper}>
-              <button className="globalButton" onClick={() => handelFileProcess()}>
+              <button 
+                className="globalButton" 
+                onClick={() => handelFileProcess()}
+                disabled={isLoading}
+              >
                 {isLoading && <div className={styles.loader} />} {!isLoading ? 'Process' : 'Processing...'}
               </button>
             </div>
@@ -119,4 +142,5 @@ const UploadSection: React.FC = () => {
   );
 };
 
+// Memoize the component to prevent unnecessary re-renders
 export default memo(UploadSection);

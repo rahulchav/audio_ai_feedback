@@ -5,6 +5,7 @@ import styles from './result.module.css';
 import ScoreCard from '../scoreCard/scoreCard';
 import { Scores, useAudio } from '@/app/context/AudioContext';
 
+// Configuration for different scoring criteria and their weights
 const ScoreCardDetails : {
     key: keyof Scores;
     name: string;
@@ -12,25 +13,32 @@ const ScoreCardDetails : {
     desc: string;
     inputType: string;
 }[]  = [
-{ key: "greeting", name: "Greeting", weight: 5, desc: "Call opening within 5 seconds", inputType: "PASS_FAIL" },
-{ key: "collectionUrgency", name: "Collection Urgency", weight: 15, desc: "Create urgency, cross-questioning", inputType: "SCORE" },
-{ key: "rebuttalCustomerHandling", name: "Rebuttal Handling", weight: 15, desc: "Address penalties, objections", inputType: "SCORE" },
-{ key: "callEtiquette", name: "Call Etiquette", weight: 15, desc: "Tone, empathy, clear speech", inputType: "SCORE" },
-{ key: "callDisclaimer", name: "Call Disclaimer", weight: 5, desc: "Take permission before ending", inputType: "PASS_FAIL" },
-{ key: "correctDisposition", name: "Correct Disposition", weight: 10, desc: "Use correct category with remark", inputType: "PASS_FAIL" },
-{ key: "callClosing", name: "Call Closing", weight: 5, desc: "Thank the customer properly", inputType: "PASS_FAIL" },
-{ key: "fatalIdentification", name: "Identification", weight: 5, desc: "Missing agent/customer info", inputType: "PASS_FAIL" },
-{ key: "fatalTapeDiscloser", name: "Tape Disclosure", weight: 10, desc: "Inform customer about recording", inputType: "PASS_FAIL" },
-{ key: "fatalToneLanguage", name: "Tone & Language", weight: 15, desc: "No abusive or threatening speech", inputType: "PASS_FAIL" }
-]
+  // Basic call handling metrics
+  { key: "greeting", name: "Greeting", weight: 5, desc: "Call opening within 5 seconds", inputType: "PASS_FAIL" },
+  { key: "collectionUrgency", name: "Collection Urgency", weight: 15, desc: "Create urgency, cross-questioning", inputType: "SCORE" },
+  { key: "rebuttalCustomerHandling", name: "Rebuttal Handling", weight: 15, desc: "Address penalties, objections", inputType: "SCORE" },
+  { key: "callEtiquette", name: "Call Etiquette", weight: 15, desc: "Tone, empathy, clear speech", inputType: "SCORE" },
+  
+  // Call compliance metrics
+  { key: "callDisclaimer", name: "Call Disclaimer", weight: 5, desc: "Take permission before ending", inputType: "PASS_FAIL" },
+  { key: "correctDisposition", name: "Correct Disposition", weight: 10, desc: "Use correct category with remark", inputType: "PASS_FAIL" },
+  { key: "callClosing", name: "Call Closing", weight: 5, desc: "Thank the customer properly", inputType: "PASS_FAIL" },
+  
+  // Critical compliance metrics
+  { key: "fatalIdentification", name: "Identification", weight: 5, desc: "Missing agent/customer info", inputType: "PASS_FAIL" },
+  { key: "fatalTapeDiscloser", name: "Tape Disclosure", weight: 10, desc: "Inform customer about recording", inputType: "PASS_FAIL" },
+  { key: "fatalToneLanguage", name: "Tone & Language", weight: 15, desc: "No abusive or threatening speech", inputType: "PASS_FAIL" }
+];
 
+// ResultSection component displays the analysis results or a prompt to upload
 const ResultSection: React.FC = () => {
   const { result, setActiveTab } = useAudio();
   return (
     <>
-
-      { result  ? (
+      {result ? (
+        // Display results when available
         <div>
+          {/* Total score display */}
           <div className={styles.totalScoreContainer}>
             <div className={styles.scoreCircle}>
               <span id="total-score" className={styles.totalScore}>{result?.totalScore}</span>
@@ -39,6 +47,7 @@ const ResultSection: React.FC = () => {
             <div className={styles.totalScoreLabel}>Your Score</div>
           </div>
 
+          {/* Individual score cards */}
           <div className={styles.scoreCardContainer}>
             {ScoreCardDetails.map((score, index) => (
               <ScoreCard
@@ -52,7 +61,8 @@ const ResultSection: React.FC = () => {
           </div>
         </div>
 
-      ):(
+      ) : (
+        // Display upload prompt when no results available
         <div className={styles.noResultContainer}>
           <svg
             className={styles.noResultIcon}
@@ -78,8 +88,9 @@ const ResultSection: React.FC = () => {
           </button>
         </div>
       )}
-
     </>
   );
 }
+
+// Memoize the component to prevent unnecessary re-renders
 export default memo(ResultSection);
