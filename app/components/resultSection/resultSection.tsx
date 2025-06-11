@@ -41,8 +41,8 @@ const ResultSection: React.FC = () => {
           {/* Total score display */}
           <div className={styles.totalScoreContainer}>
             <div className={styles.scoreCircle}>
-              <span id="total-score" className={styles.totalScore}>{result?.totalScore}</span>
-              <span className={styles.scoreSuffix}>/10</span>
+              <span className={styles.totalScore}>{result?.totalScore}</span>
+              <span className={styles.scoreSuffix}>/100</span>
             </div>
             <div className={styles.totalScoreLabel}>Your Score</div>
           </div>
